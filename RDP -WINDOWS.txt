@@ -1,0 +1,22 @@
+****RDP CONNECTION B/W 2 WINDOWS  EC2 MACHINES***========LINUX SSH (22)CONNECTION B//W 2
+
+1. 2 WINDOWS SERVER EC2 
+2. SECURTIY GROUPS ====FIREWALL CONFIGURE====RDP PORT  (3389)=ENABLE 
+3.CONNECT .....>RDP CLIENT ....>DOWNLOAD RDP FILE ......> 
+4.DECRYPT P/W....>LOAD THE DOWNLOADED .PEM FILE .....>CLICK ON DECRYPT P/W ....>ONE P/W
+5.OPEN THE RDP FILE ....DOWNLOADED....>Admoinistrator....p/w : 
+
+cnnected automatically ....>pc1
+
+6.repeat step-3 to 5 .....>to conect pc2 
++++++++++++++++++++++++++coonection from pc1 ....pc2++++++++++++++++++++++++++++
+
+7.open pc1....> run bar ..... remote desktop ...... tab ....> opposite pc ip address:
+(private ip address pc2=172.31.33.149)
+8. pc 2 user name & p/w ;;;;;;;Administrator
+p/w :decrypted of pc2 
+
+
+9. connection ges established .....> do the changes for pc2 .....>
+
+10.close rdp session from pc1 ....connect pc2 securely .....> chnages has to be reflected 
