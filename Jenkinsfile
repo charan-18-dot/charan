@@ -2,41 +2,51 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "charancherry576/python-docker-app"
-        DOCKER_TAG = "latest"
+        GIT_REPO = 'https://github.com/charan-18-dot/charan.git'
+        MAVEN_CMD = 'mvn clean package'
+        WAR_FILE = 'target/app.war'
+        TOMCAT_USER = 'charan'
+        TOMCAT_PASS = 'charan123'
+        TOMCAT_URL = 'http://34.205.71.66:8080/manager/text'
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                git ' https://github.com/charan-18-dot/charan.git'
+                git branch: 'main', url:https://github.com/charan-18-dot/charan.git 
             }
         }
 
-        stage('Build Application') {
+        stage('Build') {
             steps {
-                sh 'echo "Building the application..."'
+                sh MAVEN_CMD
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Test') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh 'mvn test'
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Deploy to Tomcat') {
             steps {
-                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://hub.docker.com/r/charancherry576/charan']) {
-                    sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
+                script {
+                    def WAR_NAME = 'app'
+                    sh """
+                    curl -v -u $TOMCAT_USER:$TOMCAT_PASS -T $WAR_FILE $TOMCAT_URL/deploy?path=/$WAR_NAME
+                    """
                 }
             }
         }
+    }
 
-        stage('Deploy Container') {
-            steps {
-                sh 'docker run -d -p 8081:80 $DOCKER_IMAGE:$DOCKER_TAG'
-            }
+    post {
+        success {
+            echo 'Deployment Successful!'
+        }
+        failure {
+            echo 'Deployment Failed!'
         }
     }
 }
