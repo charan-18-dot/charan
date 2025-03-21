@@ -1,25 +1,16 @@
 pipeline {
     agent any
 
-    environment {
-        GIT_REPO = 'https://github.com/charan-18-dot/charan.git'
-        MAVEN_CMD = 'mvn clean package'
-        WAR_FILE = 'target/app.war'
-        TOMCAT_USER = 'charan'
-        TOMCAT_PASS = 'charan123'
-        TOMCAT_URL = 'http://34.205.71.66:8080/manager/text'
-    }
-
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main', url:GIT_REPO
+                git branch: 'main', url: 'https://github.com/charan-18-dot/charan.git'
             }
         }
 
         stage('Build') {
             steps {
-                sh MAVEN_CMD
+                sh 'mvn clean package'
             }
         }
 
@@ -29,24 +20,11 @@ pipeline {
             }
         }
 
-        stage('Deploy to Tomcat') {
+        stage('Deploy') {
             steps {
-                script {
-                    def WAR_NAME = 'app'
-                    sh """
-                    curl -v -u $TOMCAT_USER:$TOMCAT_PASS -T $WAR_FILE $TOMCAT_URL/deploy?path=/$WAR_NAME
-                    """
-                }
+                echo 'Deploying application...'
+                // Add deployment scripts (Docker, AWS, etc.)
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Deployment Successful!'
-        }
-        failure {
-            echo 'Deployment Failed!'
         }
     }
 }
