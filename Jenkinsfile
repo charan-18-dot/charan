@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url:https://github.com/charan-18-dot/charan.git 
+                git branch: 'main', url:GIT_REPO
             }
         }
 
